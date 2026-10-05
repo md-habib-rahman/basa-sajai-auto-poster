@@ -36,10 +36,31 @@ async function chat(system: string, user: string): Promise<string> {
 	return (typeof out === "string" ? out : JSON.stringify(out)).trim();
 }
 
+function escapeControlChars(s: string): string {
+	let out = "";
+	let inStr = false;
+	let esc = false;
+	for (const ch of s) {
+		if (inStr) {
+			if (esc) { out += ch; esc = false; }
+			else if (ch === "\\") { out += ch; esc = true; }
+			else if (ch === '"') { out += ch; inStr = false; }
+			else if (ch === "\n") out += "\\n";
+			else if (ch === "\t") out += "\\t";
+			else if (ch.charCodeAt(0) < 32) out += "";
+			else out += ch;
+		} else {
+			if (ch === '"') inStr = true;
+			out += ch;
+		}
+	}
+	return out;
+}
+
 function parseDraft(text: string): Draft {
 	const m = text.match(/\{[\s\S]*\}/);
 	if (!m) throw new Error("No JSON in model reply");
-	const d = JSON.parse(m[0]);
+	const d = JSON.parse(escapeControlChars(m[0]));
 	if (!d.captionBn || !d.headline || !d.imagePrompt || !Array.isArray(d.hashtags))
 		throw new Error("Incomplete draft from model");
 	return { hook: d.hook ?? "", headline: d.headline, captionBn: d.captionBn, hashtags: d.hashtags, imagePrompt: d.imagePrompt };
