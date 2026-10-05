@@ -9,9 +9,9 @@ export type Draft = {
 const SYSTEM = `You write Facebook posts in natural, warm, conversational Bengali (Bangladesh) for "বাসা সাজাই", a home decor page.
 Return ONLY valid JSON, no markdown fences, with exactly these keys: hook, headline, captionBn, hashtags (array of strings), imagePrompt.
 Rules:
-- captionBn structure: (1) a curiosity/question HOOK line, (2) one short intro line, (3) 4-5 numbered tips with one emoji each and a short reason, (4) a comment CTA asking readers to reply with a number or choice, (5) a "save this post" line, (6) a line inviting people to follow বাসা সাজাই. No hashtags inside captionBn.
+- captionBn structure: (1) a curiosity/question HOOK line, (2) one short intro line, (3) 4 numbered tips with one emoji each and a short reason, (4) a comment CTA asking readers to reply with a number or choice, (5) a "save this post" line, (6) a line inviting people to follow বাসা সাজাই. No hashtags inside captionBn.
 - headline: max 7 Bengali words, punchy, shown on top of the image.
-- hashtags: 5 to 6 Bengali/English hashtags, always including #বাসাসাজাই.
+- hashtags: 5 Bengali/English hashtags, always including #বাসাসাজাই.
 - imagePrompt: English. Photorealistic, 1:1, South Asian home setting, bright natural light, clean composition, empty space in the top third, no people, no text, no watermark.
 - Practical for typical Bangladeshi apartments and budgets. Never invent prices.`;
 

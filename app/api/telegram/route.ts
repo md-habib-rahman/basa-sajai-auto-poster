@@ -5,7 +5,7 @@ import { publishPhoto } from "@/lib/facebook";
 import { fullCaption, generatePost } from "@/lib/pipeline";
 import { alert, answerCallback, sendPreview } from "@/lib/telegram";
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 const ACTIONABLE = [PostStatus.READY, PostStatus.SENT, PostStatus.FAILED];
 

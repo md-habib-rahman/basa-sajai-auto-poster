@@ -23,14 +23,21 @@ async function pickTopic(): Promise<string> {
 
 /** Generates (or regenerates, when `topic` is passed) the post for a given date. */
 export async function generatePost(forDate: string, topic?: string) {
+	const t0 = Date.now();
+	const lap = (m: string) => console.log(`[generate] ${m}: ${Date.now() - t0}ms`);
 	const t = topic ?? (await pickTopic());
+	lap("topic");
 	const draft = await writeDraft(t);
+	lap("text");
 	const raw = await generateImage(draft.imagePrompt);
+	lap("image");
 	const img = await addHeadline(raw, draft.headline);
+	lap("overlay");
 	const blob = await put(`posts/${forDate}-${Date.now()}.jpg`, img, {
 		access: "public",
 		contentType: "image/jpeg",
 	});
+	lap("upload");
 	const data = { topic: t, ...draft, imageUrl: blob.url, status: PostStatus.READY, error: null };
 	return prisma.post.upsert({ where: { forDate }, create: { forDate, ...data }, update: data });
 }

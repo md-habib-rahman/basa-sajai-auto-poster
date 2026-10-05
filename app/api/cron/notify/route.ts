@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { todayDhaka } from "@/lib/pipeline";
 import { alert, sendPreview } from "@/lib/telegram";
 
-export const maxDuration = 30;
+export const maxDuration = 300;
 
 export async function GET(req: Request) {
   if (req.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`)
