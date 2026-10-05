@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PostStatus {
+  READY       // generated, not yet sent to Telegram
+  SENT        // preview sent, waiting for your tap
+  PUBLISHING  // claimed by a tap (prevents double posting)
+  PUBLISHED
+  SKIPPED
+  FAILED
+}
+
+model Topic {
+  id        Int      @id @default(autoincrement())
+  title     String   @unique
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Post {
+  id          Int        @id @default(autoincrement())
+  forDate     String     @unique // YYYY-MM-DD in Asia/Dhaka: one post per day
+  topic       String
+  hook        String
+  headline    String
+  captionBn   String
+  hashtags    String[]
+  imagePrompt String
+  imageUrl    String
+  status      PostStatus @default(READY)
+  fbPostId    String?
+  error       String?
+  createdAt   DateTime   @default(now())
+  publishedAt DateTime?
+}
